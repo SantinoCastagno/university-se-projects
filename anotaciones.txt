@@ -1,0 +1,21 @@
+- 22 Mar. -
+Revisar datasheet
+	página 96
+	página 76 (configuring the Pin)
+Comando a tener en cuenta:
+	sudo dmesg
+
+- 29 Mar. -
+ - El datasheet es del microcontrolador.
+ - Es necesario observar el esquematico de la placa para lograr asociar el pin con el conector de la placa. 
+ - Con el datasheet podemos observar las direcciones de memorias que nos permiten acceder a los registros del microcontrolador.
+ - El sistema embebido mostrado durante la clase contaba con 6 drivers.
+	-> ic^2
+	-> uart
+	-> servo
+	-> timer: para controlar los tiempos requeridos por el servo.
+	-> lidiar
+ * Repasar relación entre voltaje, resistencia y corriente.
+
+Vamos a utilizar el DDRB (The port B input pins address).
+	- Hay que tener en cuenta una oscilación inicial que sucede en los pulsadores mecanicos (rebote).

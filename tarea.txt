@@ -1,0 +1,8 @@
+Tarea: Hacer un sistema digital que al presionar un boton se intercalen luces led utilizando:
+	- protoboard
+	- boton
+	- led
+	- placa arduino uno (microcontrolador ATMEGA328P-PU)
+
+Es importante tener en cuenta que:
+	- Conectar la salida GND (ground de la placa a la linea negativa de la protoboard)
