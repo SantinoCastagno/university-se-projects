@@ -1,46 +1,100 @@
-#define SLEEP_1 100000
-#define SLEEP_2 200000
-#define SLEEP_5 500000
+#include "sleep.h"
 
-int main(void)
+volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
+volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
+volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
+volatile unsigned char state, time;
+
+void led_off()
 {
-	volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
-	volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
-	volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
+	*(PUERTO_B) = *(PUERTO_B)&0b11111000;
+}
 
-	*(DDR_B) = 0b00100111; // setear direccion de datos
-	int a;
-	volatile long i;
-	volatile char aux, input;
+void knight_rider()
+{
+	*(DDR_B) = 0b00000111;	  // setear direccion de datos
+	*(PUERTO_B) = 0b00100000; // setear bit de pull-up
+	state = 0, time = 0;
+	volatile unsigned char input;
+	led_off();
 	while (1)
 	{
-		input = (*(PIN_B)) & 0b00001000;
-		my_sleep();
-		if (input == 00000000)
+		input = (*(PIN_B)) & 0b00100000;
+		sleep_ms(50);
+		if (input != 0b00100000)
 		{
-			*(PUERTO_B) = *(PUERTO_B)&0b11111000; // setear led en encendido
-			for (i = 0; i < SLEEP_1; i++)
+			if (state == 0)
+				state = 1;
+			else
+				state = 0;
+		}
+
+		if (state == 1)
+		{
+			switch (time)
 			{
-				a = 2;
+			case 0:
+				*(PUERTO_B) = *(PUERTO_B) | 0b00000001;
+				time = 1;
+				break;
+			case 1:
+				*(PUERTO_B) = *(PUERTO_B)&0b11111001;
+				time = 2;
+				break;
+			case 2:
+				*(PUERTO_B) = *(PUERTO_B) | 0b00000010;
+				time = 3;
+				break;
+			case 3:
+				*(PUERTO_B) = *(PUERTO_B)&0b11111010;
+				time = 4;
+				break;
+			case 4:
+				*(PUERTO_B) = *(PUERTO_B) | 0b00000100;
+				time = 5;
+				break;
+			case 5:
+				*(PUERTO_B) = *(PUERTO_B)&0b11111100;
+				time = 6;
+				break;
+			case 6:
+				*(PUERTO_B) = *(PUERTO_B) | 0b00000010;
+				time = 7;
+				break;
+			case 7:
+				*(PUERTO_B) = *(PUERTO_B)&0b11111010;
+				time = 0;
+				break;
+			default:
+				led_off();
+				break;
 			}
 		}
 		else
 		{
-			*(PUERTO_B) = *(PUERTO_B) | 0b00000111; // setear led en encendido
-			for (i = 0; i < SLEEP_1; i++)
-			{
-				a = 1;
-			}
+			led_off();
 		}
+		sleep_ms(200);
 	}
-	return 0;
 }
 
-void my_sleep()
+// metodo para testear luces led
+void basic_loop()
 {
-	int i, j;
-	for (i = 0; i < 1000; i++)
+	*(DDR_B) = 0b00000111; // setear direccion de datos
+
+	volatile char aux, input;
+	while (1)
 	{
-		j = i;
+		*(PUERTO_B) = 0b00000000; // Apaga los leds
+		sleep_ms(1000);
+		*(PUERTO_B) = 0b00000111; // Enciende los leds
+		sleep_ms(1000);
 	}
+}
+
+int main(void)
+{
+	knight_rider();
+	return 0;
 }
