@@ -1,6 +1,5 @@
-
 CC=avr-gcc
-OBJETOS=main.o serial.o
+OBJETOS=main.o serial.o sleep.o
 APP=encoder_test
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p
@@ -30,4 +29,4 @@ read:
 	sudo cat $(TTY)
 
 clean:
-	rm main.o $(APP) $(FIRMWARE)
+	rm main.o $(APP) $(FIRMWARE) sleep.o
