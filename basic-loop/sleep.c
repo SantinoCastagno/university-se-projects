@@ -1,19 +1,9 @@
 #include "sleep.h"
-#define CYCLES_PER_MS 442;
 
-void sleep_ms(long tiempo)
+void sleep_ms(unsigned int tiempo)
 {
-	volatile unsigned long limite = tiempo * CYCLES_PER_MS;
-	volatile long i;
-	for (i = 0; i < limite; i++)
-	{
-	}
-}
-
-void sleep_ms_original(int tiempo)
-{
-	unsigned int limite = tiempo * CYCLES_PER_MS;
-	volatile long i;
+	unsigned int limite = tiempo * 695;
+	volatile unsigned int i;
 	for (i = 0; i < limite; i++)
 	{
 	}
@@ -21,11 +11,14 @@ void sleep_ms_original(int tiempo)
 
 void sleep_10us() // Aun no funciona
 {
-	unsigned int limite = 1 * 3 * (0 * 3);
-	volatile long i;
-	for (i = 0; i < limite; i++)
-	{
-	}
+	unsigned int limite = 2;
+	long i = 0;
+	i = i + 1;
+	i++;
+	i++;
+	i++;
+	i = 0;
+	i = 1;
 }
 
 // void delay_ms(int milliseconds)
