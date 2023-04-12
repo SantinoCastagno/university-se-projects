@@ -9,7 +9,7 @@ void sleep_ms(unsigned int tiempo)
 	}
 }
 
-void sleep_10us() // Aun no funciona
+void sleep_10us() 
 {
 	unsigned int limite = 2;
 	long i = 0;
@@ -20,10 +20,3 @@ void sleep_10us() // Aun no funciona
 	i = 0;
 	i = 1;
 }
-
-// void delay_ms(int milliseconds)
-// {
-// 	volatile unsigned long cycles = (milliseconds * CYCLES_PER_MS);
-// 	while (cycles != 0)
-// 		cycles--;
-// }

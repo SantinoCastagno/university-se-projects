@@ -78,21 +78,6 @@ void knight_rider()
 	}
 }
 
-// metodo para testear luces led
-void basic_loop()
-{
-	*(DDR_B) = 0b00000111; // setear direccion de datos
-
-	volatile char aux, input;
-	while (1)
-	{
-		*(PUERTO_B) = 0b00000000; // Apaga los leds
-		sleep_ms(1000);
-		*(PUERTO_B) = 0b00000111; // Enciende los leds
-		sleep_ms(1000);
-	}
-}
-
 int main(void)
 {
 	knight_rider();
