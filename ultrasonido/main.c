@@ -5,18 +5,6 @@ volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
 volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
 
-void mostrar_valor(int valor)
-{
-	serial_put_str("\rvalor: \t");
-	serial_put_int(valor, 4);
-	serial_put_str("\n");
-}
-
-mostrar_fuera_de_rango()
-{
-	serial_put_str("Fuera de rango");
-}
-
 void mostrar_distancia(int distancia_cm)
 {
 	serial_put_str("\rDistancia: \t");
@@ -54,7 +42,7 @@ int main()
 		if (tiempo_us < 38000) // verificar que no se pase de rango la señal
 		{
 			tiempo_us = 0;
-			// mientras echo este en alto hay que contar el tiempo que pasa
+			// mientras echo este en alsleep_ms_times(50, 4);to hay que contar el tiempo que pasa
 			while (echo > 0)
 			{
 				// serial_put_str("debugger 2\n");
