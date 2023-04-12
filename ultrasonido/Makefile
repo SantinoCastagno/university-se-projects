@@ -12,7 +12,8 @@ TTY=/dev/ttyACM0
 # $^:Se sustituye por una lista separada por espacios de cada una de las dependencias de la presente regla.
 
 all: $(APP)
-
+	make flash
+	make read
 
 $(APP): $(OBJETOS)
 	$(CC) $(LDFLAGS) -o $@ $^ 
