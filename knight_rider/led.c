@@ -3,20 +3,19 @@
 volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
 volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
-volatile unsigned char state, time;
 
-void led_off()
+void leds_off()
 {
 	*(PUERTO_B) = *(PUERTO_B)&0b11111000;
 }
 
-void knight_rider()
+int main(void)
 {
 	*(DDR_B) = 0b00000111;	  // setear direccion de datos
 	*(PUERTO_B) = 0b00100000; // setear bit de pull-up
-	state = 0, time = 0;
-	volatile unsigned char input;
-	led_off();
+	unsigned char state = 0, time = 0, input;
+
+	leds_off();
 	while (1)
 	{
 		input = (*(PIN_B)) & 0b00100000;
@@ -66,20 +65,15 @@ void knight_rider()
 				time = 0;
 				break;
 			default:
-				led_off();
+				leds_off();
 				break;
 			}
 		}
 		else
 		{
-			led_off();
+			leds_off();
 		}
-		sleep_ms(200);
+		sleep_ms_times(94, 3);
 	}
-}
-
-int main(void)
-{
-	knight_rider();
 	return 0;
 }

@@ -1,4 +1,5 @@
 TTY=/dev/ttyACM0
+#TTY=/dev/ttyUSB0
 
 all:
 	avr-gcc -c -o sleep.o sleep.c

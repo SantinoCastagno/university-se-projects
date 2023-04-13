@@ -1,5 +1,6 @@
 #include "sleep.h"
 
+// tiempo maximo: 94ms
 void sleep_ms(unsigned int tiempo)
 {
 	unsigned int limite = tiempo * 695;
@@ -9,7 +10,7 @@ void sleep_ms(unsigned int tiempo)
 	}
 }
 
-void sleep_10us() 
+void sleep_10us()
 {
 	unsigned int limite = 2;
 	long i = 0;
