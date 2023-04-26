@@ -25,10 +25,10 @@ int main(void)
     {
         /* Wait for an incoming character */
         rcvChar = serial_get_char();
-
+        sleep_ms_times(50, 10);
         /* Echo the character back along with a carriage return and line feed */
         serial_put_char(rcvChar);
-        serial_put_char('\r');
+        // serial_put_char('a');
         serial_put_char('\n');
     }
 
