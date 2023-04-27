@@ -27,7 +27,7 @@ typedef struct
 uart_t *puerto_serial = (uart_t *)(0xc0); // puntero a la estructura de los registros del periferico
 
 #define USART_BAUDRATE 9600
-// #define F_CPU 16000000 // 16MHZ es la frecuencia del microcontrolador en el arduino uno
+#define F_CPU 16000000 // 16MHZ es la frecuencia del microcontrolador en el arduino uno
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 #define INIT 0b00000110 // USART asincrono; modo de paridad deshabilitado; un bit de stop; 8-bit de tamanio de frame
 // mascaras de bits para usos comunes

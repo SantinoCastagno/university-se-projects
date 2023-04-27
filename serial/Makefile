@@ -12,6 +12,8 @@ TTY=/dev/ttyACM0
 # $<:Se sustituye por la primera dependencia de la presente regla.
 # $^:Se sustituye por una lista separada por espacios de cada una de las dependencias de la presente regla.
 
+# F_CPU es el valor que se debe reemplazar en el fuente del serial
+
 all: $(APP)
 	make flash
 	make read
@@ -25,7 +27,7 @@ $(APP): $(OBJETOS)
 flash:
 	avr-objcopy -O ihex -R .eeprom $(APP) $(FIRMWARE)
 	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i F_CPU 16000000
-# F_CPU es el valor que se debe reemplazar en el fuente del serial
+
 
 read:
 	sudo stty -F $(TTY) speed 9600
