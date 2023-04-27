@@ -24,7 +24,8 @@ $(APP): $(OBJETOS)
 
 flash:
 	avr-objcopy -O ihex -R .eeprom $(APP) $(FIRMWARE)
-	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i
+	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i F_CPU 16000000
+# F_CPU es el valor que se debe reemplazar en el fuente del serial
 
 read:
 	sudo stty -F $(TTY) speed 9600
@@ -32,3 +33,8 @@ read:
 
 clean:
 	rm main.o $(APP) $(FIRMWARE) sleep.o serial.o
+
+test-put: 
+	sudo stty -F $(TTY) speed 9600
+	sudo echo 'l' > $(TTY)
+	
