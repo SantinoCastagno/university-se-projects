@@ -40,45 +40,38 @@ uart_t *puerto_serial = (uart_t *)(0xc0); // puntero a la estructura de los regi
 
 void serial_init() // Rutina de inicializacion
 {
-    /* El manual del atmega328p tiene un ejemplo. Adecuarla a C y
-           la estructura de datos */
-
     /* Configurar un frame de 8bits, sin bit de paridad y bit de stop */
     puerto_serial->status_control_c = (unsigned char)(INIT);
 
     /* Activar la recepcion y transmision */
     puerto_serial->status_control_b = (unsigned char)(RECEIVER_ENABLE | TRANSMITTER_ENABLE);
 
-    /* Configurar los registros High y Low con BAUD_PRESCALE */
+    /* Configurar los registros High y Low */
     puerto_serial->baud_rate_h = (unsigned char)(BAUD_PRESCALE >> 8);
     puerto_serial->baud_rate_l = (unsigned char)(BAUD_PRESCALE);
 }
 
-/* enviar un byte a traves del del dispositivo inicializado */
 void serial_put_char(char c)
 {
-    /* Wait until the transmitter is ready for the next character. */
-
-    /* completar con E/S programada */
-    /* Se debe esperar verificando el bit UDREn del registro UCSRnA,
-       hasta que el buffer esté listo para recibir un dato a transmitir */
-
     while (!((puerto_serial->status_control_a) & (READY_TO_WRITE)))
         ;
-
-    /* Send the character via the serial port. */
-    /* (escribir el dato al registro de datos de E/S */
     puerto_serial->data_es = (unsigned char)c;
+}
+
+void serial_put_string(char *str)
+{
+    char tmp, i = 0;
+    do
+    {
+        tmp = *(str + i);
+        serial_put_char(tmp);
+        i++;
+    } while (tmp != '\0');
 }
 
 char serial_get_char(void)
 {
-    /* Wait for the next character to arrive. */
-    /* Completar con E/S programada similar a serial_put_char pero
-       utilizando el bit correcto */
-
     while (!((puerto_serial->status_control_a) & (READY_TO_READ)))
         ;
-
     return (puerto_serial->data_es);
 }

@@ -16,7 +16,7 @@ TTY=/dev/ttyACM0
 
 all: $(APP)
 	make flash
-	make read
+	make screen-read
 
 $(APP): $(OBJETOS)
 	$(CC) $(LDFLAGS) -o $@ $^ 
@@ -24,19 +24,24 @@ $(APP): $(OBJETOS)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+clean:
+	rm main.o $(APP) $(FIRMWARE) sleep.o serial.o
+
 flash:
 	avr-objcopy -O ihex -R .eeprom $(APP) $(FIRMWARE)
 	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i F_CPU 16000000
 
 
-read:
+screen-read:
+	screen $(TTY) 9600
+
+cat-read:
 	sudo stty -F $(TTY) speed 9600
 	sudo cat $(TTY)
 
-clean:
-	rm main.o $(APP) $(FIRMWARE) sleep.o serial.o
-
 test-put: 
 	sudo stty -F $(TTY) speed 9600
-	sudo echo 'l' > $(TTY)
+	sudo echo 'l' >> $(TTY)
 	
+screen-put:
+	screen -r "tty-screen" 

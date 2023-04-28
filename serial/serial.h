@@ -12,6 +12,7 @@
 
 void serial_init(void);
 void serial_put_char(char c);
+void serial_put_string(char *str);
 char serial_get_char(void);
 
 #endif /* _SERIAL_H */
