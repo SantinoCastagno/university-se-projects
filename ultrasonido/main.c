@@ -1,6 +1,8 @@
 #include "serial.h"
 #include "sleep.h"
 
+#define ECHO_REC 0x02
+
 volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
 volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
@@ -30,9 +32,8 @@ int main()
 		(*PUERTO_B) = (*PUERTO_B) & 0b11111110; // bajo trig
 
 		tiempo_us = 0;
-		while (echo == 0 && tiempo_us <= 38000)
+		while ((!((*PIN_B) & ECHO_REC)) && tiempo_us <= 38000)
 		{
-			echo = (*PIN_B) & 0b00000010; // obtengo echo
 			sleep_10us();
 			tiempo_us += 10;
 		}
@@ -40,16 +41,15 @@ int main()
 		{
 			tiempo_us = 0;
 			// mientras echo este en alto
-			while (echo > 0)
+			while ((*PIN_B) & ECHO_REC)
 			{
-				tiempo_us = tiempo_us + 10;
 				sleep_10us();
-				echo = (*PIN_B) & 0b00000010; // obtengo echo
+				tiempo_us = tiempo_us + 10;
 			}
 			distancia = tiempo_us / 46;
 			mostrar_distancia(distancia);
 		}
-		sleep_ms_times(50, 4);
+		sleep_ms(50);
 	}
 
 	return 0;
