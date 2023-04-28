@@ -14,8 +14,7 @@ int main(void)
     serial_init();
 
     serial_put_string("start\r\n");
-    serial_put_string("xd");
-
+    serial_put_int(20, 3);
     while (rcvChar != 'q')
     {
         rcvChar = serial_get_char();

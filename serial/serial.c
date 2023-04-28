@@ -69,6 +69,18 @@ void serial_put_string(char *str)
     } while (tmp != '\0');
 }
 
+void serial_put_int(int val, int digitos)
+{
+    int tmp, i = 0;
+    while (digitos > 0)
+    {
+        tmp = val % 10;
+        val = val / 10;
+        serial_put_char(tmp + 48);
+        digitos--;
+    }
+}
+
 char serial_get_char(void)
 {
     while (!((puerto_serial->status_control_a) & (READY_TO_READ)))
