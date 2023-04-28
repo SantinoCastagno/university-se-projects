@@ -10,7 +10,6 @@
 int main(void)
 {
     char rcvChar = 0;
-
     /* Configure the UART for the serial driver */
     serial_init();
 
