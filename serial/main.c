@@ -62,7 +62,7 @@ int ultrasound()
     return 0;
 }
 
-int knight_rider(void)
+int knight_rider(char status)
 {
     unsigned char state = 0, time = 0, input;
 
@@ -134,25 +134,27 @@ int main(void)
 {
     *(DDR_B) = INIT_DDR; // Configura la direccion de datos del registro B (bit 1-3 Knight rider y bit 0-1 para ultrasonido)
     serial_init();       // Configura el UART para el driver serial
-    char rcvChar = 0;
+    char rcvChar = 0, kr_status = 0;
 
     serial_put_string("starting the program\r\n");
     while (1)
     {
-        knight_rider();
         if (serial_get_char_ready())
-        rcvChar = serial_get_char();
-        switch (rcvChar)
         {
-        case 'u':
-            ultrasound();
-            break;
-        case 'k':
-            knight_rider();
-            break;
-        default:
-            break;
+            rcvChar = serial_get_char();
+            switch (rcvChar)
+            {
+            case 'u':
+                ultrasound();
+                break;
+            case 'k':
+                kr_status = ~kr_status;
+                break;
+            default:
+                break;
+            }
         }
+        knight_rider(kr_status);
 
         serial_put_char('\r');
         serial_put_char('\n');
