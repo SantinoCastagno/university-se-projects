@@ -81,6 +81,11 @@ void serial_put_int(int val, int digitos)
     }
 }
 
+int serial_get_char_ready(void)
+{
+    return !((puerto_serial->status_control_a) & (READY_TO_READ));
+}
+
 char serial_get_char(void)
 {
     while (!((puerto_serial->status_control_a) & (READY_TO_READ)))

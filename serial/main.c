@@ -24,7 +24,6 @@ mostrar_distancia(int distancia_cm)
     serial_put_string("cm\r");
 }
 
-
 /*TO DO: Hay un error con el ultrasound por el que imprime un valor de distancia mas grande del que deberia.*/
 int ultrasound()
 {
@@ -67,7 +66,7 @@ int knight_rider(void)
 {
     unsigned char state = 0, time = 0, input;
 
-    *(PUERTO_B) = *(PUERTO_B) & (000 << 2);
+    *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
     while (1)
     {
         /*TO DO: verificar por que se realizaba esta asignacion.*/
@@ -118,15 +117,15 @@ int knight_rider(void)
                 time = 0;
                 break;
             default:
-                leds_off();
+                *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
                 break;
             }
         }
         else
         {
-            leds_off();
+            *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
         }
-        sleep_ms_times(94, 3);
+        sleep_ms_times(90, 4);
     }
     return 0;
 }
@@ -140,6 +139,8 @@ int main(void)
     serial_put_string("starting the program\r\n");
     while (1)
     {
+        knight_rider();
+        if (serial_get_char_ready())
         rcvChar = serial_get_char();
         switch (rcvChar)
         {

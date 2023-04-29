@@ -5,7 +5,7 @@ CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p
 LDFLAGS=-mmcu=atmega328p
 FIRMWARE=imagen.hex
 TTY=/dev/ttyACM0
-#TTY=/dev/ttyUSB0
+# TTY=/dev/ttyUSB0
 
 # $@:Se sustituye por el nombre del objetivo de la presente regla.
 # $*:Se sustituye por la raíz de un nombre de fichero.
