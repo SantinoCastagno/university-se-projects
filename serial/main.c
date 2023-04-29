@@ -62,79 +62,64 @@ int ultrasound()
     return 0;
 }
 
-int knight_rider(char status)
+unsigned char kr_time = 0;
+knight_rider(unsigned char kr_status)
 {
-    unsigned char state = 0, time = 0, input;
-
     *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
-    while (1)
+    /*TO DO: aparentemente las asignaciones de los bits para encender los leds estarían funcionando, pero puede fallar.*/
+    if (kr_status == 1)
     {
-        /*TO DO: verificar por que se realizaba esta asignacion.*/
-        input = (*(PIN_B)) & 0b00100000;
-        sleep_ms(50);
-        if (input != 0b00100000)
+        switch (kr_time)
         {
-            if (state == 0)
-                state = 1;
-            else
-                state = 0;
-        }
-        /*TO DO: aparentemente las asignaciones de los bits para encender los leds estarían funcionando, pero puede fallar.*/
-        if (state == 1)
-        {
-            switch (time)
-            {
-            case 0:
-                *(PUERTO_B) = *(PUERTO_B) | (0b001 << 2);
-                time = 1;
-                break;
-            case 1:
-                *(PUERTO_B) = *(PUERTO_B) & ~(0b110 << 2);
-                time = 2;
-                break;
-            case 2:
-                *(PUERTO_B) = *(PUERTO_B) | (0b010 << 2);
-                time = 3;
-                break;
-            case 3:
-                *(PUERTO_B) = *(PUERTO_B) & ~(0b101 << 2);
-                time = 4;
-                break;
-            case 4:
-                *(PUERTO_B) = *(PUERTO_B) | (0b100 << 2);
-                time = 5;
-                break;
-            case 5:
-                *(PUERTO_B) = *(PUERTO_B) & ~(0b011 << 2);
-                time = 6;
-                break;
-            case 6:
-                *(PUERTO_B) = *(PUERTO_B) | (0b010 << 2);
-                time = 7;
-                break;
-            case 7:
-                *(PUERTO_B) = *(PUERTO_B) & ~(0b101 << 2);
-                time = 0;
-                break;
-            default:
-                *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
-                break;
-            }
-        }
-        else
-        {
+        case 0:
+            *(PUERTO_B) = *(PUERTO_B) | (0b001 << 2);
+            kr_time = 1;
+            break;
+        case 1:
+            *(PUERTO_B) = *(PUERTO_B) & ~(0b110 << 2);
+            kr_time = 2;
+            break;
+        case 2:
+            *(PUERTO_B) = *(PUERTO_B) | (0b010 << 2);
+            kr_time = 3;
+            break;
+        case 3:
+            *(PUERTO_B) = *(PUERTO_B) & ~(0b101 << 2);
+            kr_time = 4;
+            break;
+        case 4:
+            *(PUERTO_B) = *(PUERTO_B) | (0b100 << 2);
+            kr_time = 5;
+            break;
+        case 5:
+            *(PUERTO_B) = *(PUERTO_B) & ~(0b011 << 2);
+            kr_time = 6;
+            break;
+        case 6:
+            *(PUERTO_B) = *(PUERTO_B) | (0b010 << 2);
+            kr_time = 7;
+            break;
+        case 7:
+            *(PUERTO_B) = *(PUERTO_B) & ~(0b101 << 2);
+            kr_time = 0;
+            break;
+        default:
             *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
+            break;
         }
-        sleep_ms_times(90, 4);
+    }
+    else
+    {
+        *(PUERTO_B) = *(PUERTO_B) & ~(0b111 << 2);
     }
     return 0;
 }
 
 int main(void)
 {
-    *(DDR_B) = INIT_DDR; // Configura la direccion de datos del registro B (bit 1-3 Knight rider y bit 0-1 para ultrasonido)
+    *(DDR_B) = INIT_DDR; // Configura la direccion de datos del registro B (bit 0-1 para ultrasonido y bit 1-3 Knight rider)
     serial_init();       // Configura el UART para el driver serial
-    char rcvChar = 0, kr_status = 0;
+    unsigned char rcvChar = 0, kr_on = 1;
 
     serial_put_string("starting the program\r\n");
     while (1)
@@ -145,24 +130,21 @@ int main(void)
             switch (rcvChar)
             {
             case 'u':
+                serial_put_string("1\n");
                 ultrasound();
                 break;
             case 'k':
-                kr_status = ~kr_status;
+                serial_put_string("2\n");
+                kr_on = ~kr_on;
                 break;
             default:
                 break;
             }
         }
-        knight_rider(kr_status);
-
-        serial_put_char('\r');
-        serial_put_char('\n');
+        knight_rider(kr_on);
         sleep_ms_times(50, 20);
+        serial_put_string("8\n");
     }
-
-    // for (;;)
-    //     ;
-
+    serial_put_string("9\n");
     return 0;
 }
