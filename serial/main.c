@@ -33,12 +33,12 @@ int ultrasound()
     while (flag)
     {
         distancia = 0;
-        tiempo_us = 0;
 
         (*PUERTO_B) = (*PUERTO_B) | HIGH_TRIG; // levanto trig
         sleep_10us();
         (*PUERTO_B) = (*PUERTO_B) & LOW_TRIG; // bajo trig
 
+        tiempo_us = 0;
         while ((!((*PIN_B) & ECHO_REC)) && tiempo_us <= 38000) // esperar la señal
         {
             sleep_10us();
@@ -52,7 +52,7 @@ int ultrasound()
                 sleep_10us();
                 tiempo_us += 10;
             }
-            distancia = tiempo_us / 46;
+            distancia = tiempo_us / 460;
             mostrar_distancia(distancia);
             flag = 0;
         }
@@ -130,20 +130,17 @@ int main(void)
             switch (rcvChar)
             {
             case 'u':
-                serial_put_string("1\n");
-                ultrasound();
                 break;
             case 'k':
-                serial_put_string("2\n");
-                kr_on = ~kr_on;
+                kr_on = !kr_on;
                 break;
             default:
                 break;
             }
         }
+        ultrasound(); /* Mover al switch */
         knight_rider(kr_on);
         sleep_ms_times(50, 20);
-        serial_put_string("8\n");
     }
     serial_put_string("9\n");
     return 0;

@@ -30,6 +30,7 @@ uart_t *puerto_serial = (uart_t *)(0xc0); // puntero a la estructura de los regi
 #define F_CPU 16000000 // 16MHZ es la frecuencia del microcontrolador en el arduino uno
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 #define INIT 0b00000110 // USART asincrono; modo de paridad deshabilitado; un bit de stop; 8-bit de tamanio de frame
+
 // mascaras de bits para usos comunes
 #define RECEIVER_ENABLE 0x10    // RXEN0 Habilitar la recepcion
 #define TRANSMITTER_ENABLE 0x08 // TXEN0 Habilitar la transmision
@@ -71,24 +72,31 @@ void serial_put_string(char *str)
 
 void serial_put_int(int val, int digitos)
 {
-    int tmp, i = 0;
-    while (digitos > 0)
+    int tmp, i = digitos;
+    char num[digitos];
+
+    while (i > 0)
     {
         tmp = val % 10;
         val = val / 10;
-        serial_put_char(tmp + 48);
-        digitos--;
+        num[i - 1] = tmp + 48;
+        i--;
+    }
+
+    for (i = 0; i < digitos; i++)
+    {
+        serial_put_char(num[i]);
     }
 }
 
 int serial_get_char_ready(void)
 {
-    return ((puerto_serial->status_control_a) && (READY_TO_READ));
+    return ((puerto_serial->status_control_a) & (READY_TO_READ)) != 0;
 }
 
 char serial_get_char(void)
 {
-    while (!((puerto_serial->status_control_a) & (READY_TO_READ)))
+    while (((puerto_serial->status_control_a) & (READY_TO_READ)) == 0)
         ;
     return (puerto_serial->data_es);
 }

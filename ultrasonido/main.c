@@ -46,7 +46,7 @@ int main()
 				sleep_10us();
 				tiempo_us = tiempo_us + 10;
 			}
-			distancia = tiempo_us / 46;
+			distancia = tiempo_us / 460;
 			mostrar_distancia(distancia);
 		}
 		sleep_ms(50);
