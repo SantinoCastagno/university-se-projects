@@ -1,9 +1,3 @@
-/**********************************************************************
- *
- * main.c - the main program test file for the serial driver
- *
- **********************************************************************/
-
 #include "serial.h"
 #include "sleep.h"
 #include <stdint.h>
@@ -117,7 +111,7 @@ knight_rider(unsigned char kr_status)
 
 int main(void)
 {
-    *(DDR_B) = INIT_DDR; // Configura la direccion de datos del registro B (bit 0-1 para ultrasonido y bit 1-3 Knight rider)
+    (*DDR_B) = INIT_DDR; // Configura la direccion de datos del registro B (bit 0-1 para ultrasonido y bit 1-3 Knight rider)
     serial_init();       // Configura el UART para el driver serial
     unsigned char rcvChar = 0, kr_on = 1;
 
