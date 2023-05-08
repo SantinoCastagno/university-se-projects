@@ -58,7 +58,7 @@ int adc_get(char input)
         /* IMPORTANT: ADCL must be read first, then ADCH */
         low = adc->adcl;
         high = adc->adch;
-        res = high * (2 ^ 8) + low;
+        res = high << 8 | low;
 
         return res;
 }

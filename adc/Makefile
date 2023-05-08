@@ -34,11 +34,11 @@ flash:
 screen:
 	screen $(TTY) 9600
 
-cat-read:
+read-cat:
 	sudo stty -F $(TTY) speed 9600
 	sudo cat $(TTY)
 
-test-put: 
+put-cat: 
 	sudo stty -F $(TTY) speed 9600
 	sudo echo 'l' >> $(TTY)
 	
