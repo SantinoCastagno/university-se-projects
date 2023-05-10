@@ -16,7 +16,7 @@ TTY=/dev/ttyACM0
 
 all: $(APP)
 	make flash
-#	./run.sh
+	sudo ./kbd.sh
 
 $(APP): $(OBJETOS)
 	$(CC) $(LDFLAGS) -o $@ $^ 
