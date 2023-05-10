@@ -36,7 +36,7 @@ screen:
 	screen $(TTY) 9600
 
 clean:
-	rm main.o $(APP) $(FIRMWARE)
+	rm $(APP) $(FIRMWARE) $(OBJETOS)
 
 test-put: 
 	sudo stty -F $(TTY) speed 9600
