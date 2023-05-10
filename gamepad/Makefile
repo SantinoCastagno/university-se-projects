@@ -1,5 +1,5 @@
 CC=avr-gcc
-OBJETOS=main.o serial.o sleep.o
+OBJETOS=main.o serial.o sleep.o adc.o
 APP=serial
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p
@@ -36,7 +36,7 @@ screen:
 	screen $(TTY) 9600
 
 clean:
-	rm main.o $(APP) $(FIRMWARE) sleep.o serial.o
+	rm main.o $(APP) $(FIRMWARE)
 
 test-put: 
 	sudo stty -F $(TTY) speed 9600
