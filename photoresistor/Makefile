@@ -16,10 +16,10 @@ TTY=/dev/ttyACM0
 
 all: $(APP)
 	make flash
-#	 make screen
+	make exe-script
 
 $(APP): $(OBJETOS)
-	$(CC) $(LDFLAGS) -o $@ $^ 
+	$(CC) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -33,6 +33,9 @@ flash:
 
 screen:
 	screen $(TTY) 9600
+
+exe-script:
+	sudo ./light_updater.sh
 
 read-cat:
 	sudo stty -F $(TTY) speed 9600
