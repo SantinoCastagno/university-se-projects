@@ -124,6 +124,7 @@ int main(void)
             switch (rcvChar)
             {
             case 'u':
+                ultrasound();
                 break;
             case 'k':
                 kr_on = !kr_on;
@@ -132,7 +133,6 @@ int main(void)
                 break;
             }
         }
-        ultrasound(); /* Mover al switch */
         knight_rider(kr_on);
         sleep_ms_times(50, 20);
     }

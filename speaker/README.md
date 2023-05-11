@@ -1,8 +1,8 @@
 # Speaker & potenciometro
 
-Este programa realiza lo siguiente:
-    1. Suena en el speaker la canción de "Happy Birthday".
-    2. Permite que, mediante el potenciometro, se manipule el volumen del speaker.
+Este programa realiza las siguientes acciones:
+    1. Hace que suene en el speaker la canción de "Happy Birthday".
+    2. Permite que, mediante el potenciometro, se manipule el volumen de los sonidos que emite el speaker.
 
 # Observacion
 
@@ -32,8 +32,6 @@ En caso de que no funcione, ejecutar:
 ```
 
 Y observar cuál es la interfaz TTY asociada a la placa Arduino conectada por USB. Luego, cambiar dicha variable en el Makefile.
-
-
 
 ## Authors
 
