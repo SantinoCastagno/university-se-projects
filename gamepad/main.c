@@ -8,8 +8,8 @@
 #define HIGH_BTN_SHOOT 0x01
 
 #define ADC_MAX_VALUE 1024
-#define ADC_LEFT_MOVE (ADC_MAX_VALUE / 2) - 100
-#define ADC_RIGHT_MOVE (ADC_MAX_VALUE / 2) + 100
+#define ADC_LEFT_MOVE (ADC_MAX_VALUE / 2) - 50
+#define ADC_RIGHT_MOVE (ADC_MAX_VALUE / 2) + 50
 
 volatile unsigned char *PIN_B = (unsigned char *)0x23;    // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;    // direccion de DDR_B
@@ -23,7 +23,6 @@ int main()
     (*PUERTO_B) = INIT_PULL_UP;
     serial_init();
     adc_init();
-    sleep_ms_times(90, 10);
 
     /* inf loop */
     while (1)
@@ -34,19 +33,22 @@ int main()
         input_adc = adc_get(0);
         // serial_put_int(input_adc, 4);
         // serial_put_string("\r\n");
-        sleep_ms_times(50, 10);
+        sleep_ms_times(20, 1);
         if (!(input_btn & HIGH_BTN_SHOOT))
         {
             switch (input_adc)
             {
             case 0 ... ADC_LEFT_MOVE:
-                serial_put_string("izquierda disparando\n");
+                serial_put_char('3');
+                serial_put_char('\n');
                 break;
             case ADC_LEFT_MOVE + 1 ... ADC_RIGHT_MOVE - 1:
-                serial_put_string("centro disparando\n");
+                serial_put_char('5');
+                serial_put_char('\n');
                 break;
             case ADC_RIGHT_MOVE ... ADC_MAX_VALUE:
-                serial_put_string("derecha disparando\n");
+                serial_put_char('4');
+                serial_put_char('\n');
                 break;
             default:
                 break;
@@ -57,13 +59,16 @@ int main()
             switch (input_adc)
             {
             case 0 ... ADC_LEFT_MOVE:
-                serial_put_string("izquierda sin disparar\n");
+                serial_put_char('1');
+                serial_put_char('\n');
                 break;
             case ADC_LEFT_MOVE + 1 ... ADC_RIGHT_MOVE - 1:
-                serial_put_string("centro sin disparar\n");
+                serial_put_char('0');
+                serial_put_char('\n');
                 break;
             case ADC_RIGHT_MOVE ... ADC_MAX_VALUE:
-                serial_put_string("derecha sin disparar\n");
+                serial_put_char('2');
+                serial_put_char('\n');
                 break;
             default:
                 break;

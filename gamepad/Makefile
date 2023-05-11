@@ -16,7 +16,6 @@ TTY=/dev/ttyACM0
 
 all: $(APP)
 	make flash
-	sudo ./kbd.sh
 
 $(APP): $(OBJETOS)
 	$(CC) $(LDFLAGS) -o $@ $^ 
@@ -29,7 +28,6 @@ flash:
 	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i F_CPU 16000000
 
 read:
-	sudo stty -F $(TTY) speed 9600
 	sudo cat $(TTY)
 
 screen:
@@ -38,7 +36,6 @@ screen:
 clean:
 	rm $(APP) $(FIRMWARE) $(OBJETOS)
 
-test-put: 
-	sudo stty -F $(TTY) speed 9600
-	sudo echo 'l' > $(TTY)
+game: 
+	sudo ./game.sh
 	
