@@ -19,3 +19,21 @@ Comando a tener en cuenta:
 
 Vamos a utilizar el DDRB (The port B input pins address).
 	- Hay que tener en cuenta una oscilación inicial que sucede en los pulsadores mecanicos (rebote).
+
+- 17 May. -
+ - Ejercicio de servo -
+	-> El servo capta señales de 20ms de duracion, pero solo interpreta lo que sucede entre 1ms y 2ms.
+	-> Si el pulso esta prendido 1.5ms se supone que el servo deberia estar en una posición central.
+	-> En elmodo fast-pwm se utilizan dos registros, el del timer que se encarga de contar cada cierto tiempo y el de comparación.
+	-> Se recomienda utilizar el timer de 16 bits.
+	-> El prescalar detemina la cantidad de ciclos de reloj que tendran que pasar para que se incremente el timer.
+ - Ejercicio de wireless -
+	-> Cuando el programa principal del receptor capta que se le activa la resistencia activa las interrupciones.
+ - Ejercicio de sonido -
+	-> Para emular la señal análogica lo que se hace es levantar y bajar la señal muchas veces.
+		1. Si la señal tiene que ser de 2.5v y la señal tope es de 5v.
+		2. Entonces, se baja la señal al minimo y se sube al maximo al máximo de frecuencia.
+		3. Como resultado se obtiene que la señal oscila alrededor de los 2.5v.
+ - Práctica de ejercicio de servo -
+	16mhz -> 16kk ciclos por segundos.
+	16kk/16 = 1kk
