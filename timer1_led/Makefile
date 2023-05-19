@@ -1,6 +1,6 @@
 CC=avr-gcc
-OBJETOS=main.o timer1.c utils.c tasks.c
-APP=serial
+OBJETOS=main.o timer1.o
+APP=servo-movement
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p
 FIRMWARE=imagen.hex
@@ -24,7 +24,7 @@ $(APP): $(OBJETOS)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm main.o $(APP) $(FIRMWARE) 
+	rm main.o $(APP) $(FIRMWARE) $(OBJETOS)
 
 flash:
 	avr-objcopy -O ihex -R .eeprom $(APP) $(FIRMWARE)
