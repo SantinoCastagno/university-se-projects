@@ -1,6 +1,6 @@
 CC=avr-gcc
 OBJETOS=main.o adc.o sleep.o serial.o
-APP=serial
+APP=photoresistor
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p
 FIRMWARE=imagen.hex

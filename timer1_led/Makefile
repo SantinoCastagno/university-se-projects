@@ -1,5 +1,5 @@
 CC=avr-gcc
-OBJETOS=main.o adc.o sleep.o serial.o
+OBJETOS=main.o timer1.c utils.c tasks.c
 APP=serial
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p
@@ -16,7 +16,6 @@ TTY=/dev/ttyACM0
 
 all: $(APP)
 	make flash
-#	 make screen
 
 $(APP): $(OBJETOS)
 	$(CC) $(LDFLAGS) -o $@ $^ 
@@ -25,20 +24,8 @@ $(APP): $(OBJETOS)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm main.o $(APP) $(FIRMWARE) adc.o sleep.o serial.o
+	rm main.o $(APP) $(FIRMWARE) 
 
 flash:
 	avr-objcopy -O ihex -R .eeprom $(APP) $(FIRMWARE)
 	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i F_CPU 16000000
-
-screen:
-	screen $(TTY) 9600
-
-read-cat:
-	sudo stty -F $(TTY) speed 9600
-	sudo cat $(TTY)
-
-put-cat: 
-	sudo stty -F $(TTY) speed 9600
-	sudo echo 'l' >> $(TTY)
-	

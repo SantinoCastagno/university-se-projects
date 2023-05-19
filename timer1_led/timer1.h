@@ -6,9 +6,9 @@
  * META : ocultar el hardware a la aplicacion
  *
  **********************************************************************/
-#ifndef _TIMER_H
-#define _TIMER_H
+#ifndef _TIMER1_H
+#define _TIMER1_H
 
-void timer1_init(void);
+int timer1_init(uint8_t mode);
 
-#endif /* _SERIAL_H */
+#endif /* _TIMER1_H */

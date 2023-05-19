@@ -3,7 +3,8 @@ Revisar datasheet
 	página 96
 	página 76 (configuring the Pin)
 Comando a tener en cuenta:
-	sudo dmesg
+	- $ sudo dmesg
+	- El puerto B de un atmega328 tiene los bits 0-5 mapeados a los pines 8-13 de arduino 
 
 - 29 Mar. -
  - El datasheet es del microcontrolador.
