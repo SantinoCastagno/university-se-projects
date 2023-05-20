@@ -1,5 +1,5 @@
 CC=avr-gcc
-OBJETOS=main.o timer1.o
+OBJETOS=main.o timer1.o sleep.o serial.o
 APP=servo-movement
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p
@@ -29,3 +29,10 @@ clean:
 flash:
 	avr-objcopy -O ihex -R .eeprom $(APP) $(FIRMWARE)
 	sudo avrdude -p atmega328p -c arduino -P $(TTY) -b 115200 -D -U flash:w:$(FIRMWARE):i F_CPU 16000000
+
+screen:
+	screen $(TTY) 9600
+
+cat-read:
+	sudo stty -F $(TTY) speed 9600
+	sudo cat $(TTY)
