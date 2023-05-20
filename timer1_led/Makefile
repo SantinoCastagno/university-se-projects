@@ -1,5 +1,5 @@
 CC=avr-gcc
-OBJETOS=main.o timer1.o sleep.o
+OBJETOS=main.o timer1.o
 APP=servo-movement
 CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328p 
 LDFLAGS=-mmcu=atmega328p

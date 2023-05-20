@@ -9,6 +9,6 @@
 #ifndef _TIMER1_H
 #define _TIMER1_H
 
-int timer1_init(char mode);
+int timer1_init();
 
 #endif /* _TIMER1_H */

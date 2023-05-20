@@ -6,7 +6,7 @@ volatile unsigned char *DDR_B = (unsigned char *)0x24; // direccion de DDR_B
 int main(void)
 {
 	(*DDR_B) |= 0b00000010; // setear direccion de datos
-	timer1_init(1);
+	timer1_init();
 	while (1)
 	{
 		;
