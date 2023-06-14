@@ -78,18 +78,17 @@ int timer1_init()
 }
 
 /**
- * GRADE: para posicionar el servo (min 0 y max 180)
+ * GRADE: para posicionar el servo (min 0 y max 100)
  */
 int timer1_pwm_move_to(int grade)
 {
-        long int init_value, temp;
+        uint16_t init_value, temp;
         uint8_t low, high;
 
-        // if (grade < 0 || grade > 180)
+        // if (grade < 0 || grade > 100)
         //         return 1;
 
-        init_value = grade * 100 / 180;
-        temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * init_value;
+        temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * grade;
         high = (temp >> 8);
         low = temp;
 

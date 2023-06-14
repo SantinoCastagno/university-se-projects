@@ -1,7 +1,7 @@
 #include <avr/interrupt.h>
-#include "timer1.h"
-#include "sleep.h"
 #include "serial.h"
+#include "sleep.h"
+#include "timer1.h"
 
 volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
@@ -25,15 +25,15 @@ int main(void)
 		switch (input)
 		{
 		case 1:
-			if (pos < 180)
+			if (pos < 100)
 			{
-				pos += 10;
+				pos += 5;
 			}
 			break;
 		case 2:
 			if (pos > 0)
 			{
-				pos -= 10;
+				pos -= 5;
 			}
 			break;
 		default:
