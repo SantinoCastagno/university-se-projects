@@ -44,7 +44,7 @@ int main(void)
 		default:
 			break;
 		}
-		sleep_ms(20);
+		sleep_ms(50);
 	}
 
 	while (DBG)
