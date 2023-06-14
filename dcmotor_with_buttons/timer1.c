@@ -12,7 +12,7 @@
 #include "serial.h"
 
 /* Macros para la configuracion de los registros de control */
-#define CONF_CONTROL_REG_A_FPWM 0b10000010; // [COM1A1|COM1A2]  clear on match  - [WGM11|WGM10]         fast PWM
+#define CONF_CONTROL_REG_A_FPWM 0b00100010; // [COM1B1|COM1B2]  clear on match  - [WGM11|WGM10]         fast PWM
 #define CONF_CONTROL_REG_B_FPWM 0b00011010; // [WGM13|WGM12]    fast PWM        - [CS02|CS01|CS00]      preescale 8
 #define CONF_CONTROL_REG_C_FPWM 0b00000000; //
 
@@ -32,8 +32,8 @@
 #define MAX_PWM_8P 0x9c40
 #define TIMER1_FREQ_H 0x9c
 #define TIMER1_FREQ_L 0x40
-#define TIMER1_0CR1AH_POS 0x0f
-#define TIMER1_0CR1AL_POS 0x9f
+#define TIMER1_0CR1BH_POS 0x0f
+#define TIMER1_0CR1BL_POS 0x9f
 
 /* Estructura de datos del driver TIMER */
 typedef struct
@@ -70,8 +70,8 @@ int timer1_init()
         timer->in_capture_regl = TIMER1_FREQ_L;
 
         /* determinamos el ancho de la senial en alto en cada ciclo con el registro OCR1A */
-        timer->out_compare_reg_ah = TIMER1_0CR1AH_POS;
-        timer->out_compare_reg_al = TIMER1_0CR1AL_POS;
+        timer->out_compare_reg_bh = TIMER1_0CR1BH_POS;
+        timer->out_compare_reg_bl = TIMER1_0CR1BL_POS;
 
         /* reiniciamos los registros del contador (por las dudas) */
         timer->counter_reg_l = 0;
@@ -90,25 +90,25 @@ int timer1_pwm_move_to(int speed)
         // if (speed < 0 || speed > 100)
         //         return 1;
 
-        temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * speed;
+        temp = MAX_PWM_8P / 100 * speed;
         high = (temp >> 8);
         low = temp;
 
         /* determinamos el ancho de la senial en alto en cada ciclo con el registro OCR1A */
-        timer->out_compare_reg_ah = high;
-        timer->out_compare_reg_al = low;
+        timer->out_compare_reg_bh = high;
+        timer->out_compare_reg_bl = low;
 
         return 0;
 }
 
 int timer1_pwm_max()
 {
-        timer->out_compare_reg_ah = 0x9c;
-        timer->out_compare_reg_al = 0x40;
+        timer->out_compare_reg_bh = 0x9c;
+        timer->out_compare_reg_bl = 0x40;
 }
 
 int timer1_pwm_min()
 {
-        timer->out_compare_reg_ah = 0x03;
-        timer->out_compare_reg_al = 0xe8;
+        timer->out_compare_reg_bh = 0x03;
+        timer->out_compare_reg_bl = 0xe8;
 }
