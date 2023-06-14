@@ -7,6 +7,8 @@ volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
 volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
 
+#define RUN 0
+
 int main(void)
 {
 	int speed = 0;
@@ -18,7 +20,7 @@ int main(void)
 
 	timer1_init();
 	serial_init();
-	while (1)
+	while (RUN)
 	{
 		input = ((*PIN_B) & 0b00001100) >> 2;
 		sleep_ms(5);

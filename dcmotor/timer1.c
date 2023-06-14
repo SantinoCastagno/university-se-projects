@@ -21,17 +21,17 @@
  * PREESCALAR:         8
  * f_cpu/prescalar = 16000000/8 = 2000000 t/s
  *
- * FREQ:  2000000 t/s * 0.020    = 39999 = 0x9c3f
+ * FREQ:  2000000 t/s * 0.020    = 39999 = 0x9c40
  * MIN:   2000000 t/s * 0.001    =  2000 = 0x07d0
- * MAX:   2000000 t/s * 0.002    =  3999 = 0x9c40
- *        2000000 t/s * 0.002    =  XXXX = 0x9c3f
+ * MAX:   2000000 t/s * 0.020    =  3999 = 0x9c40
+ *        2000000 t/s *          =  XXXX = 0x
  **********************************************************************/
 
 /* Macros de valores */
-#define MIN_PWM_8P 0x07d0
-#define MAX_PWM_8P 0x9c3f
+#define MIN_PWM_8P 0x0000
+#define MAX_PWM_8P 0x9c40
 #define TIMER1_FREQ_H 0x9c
-#define TIMER1_FREQ_L 0x3f
+#define TIMER1_FREQ_L 0x40
 #define TIMER1_0CR1AH_POS 0x0f
 #define TIMER1_0CR1AL_POS 0x9f
 
@@ -87,8 +87,8 @@ int timer1_pwm_move_to(int speed)
         uint16_t temp;
         uint8_t low, high;
 
-        if (speed < 0 || speed > 100)
-                return 1;
+        // if (speed < 0 || speed > 100)
+        //         return 1;
 
         temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * speed;
         high = (temp >> 8);
@@ -104,7 +104,7 @@ int timer1_pwm_move_to(int speed)
 int timer1_pwm_max()
 {
         timer->out_compare_reg_ah = 0x9c;
-        timer->out_compare_reg_al = 0x3f;
+        timer->out_compare_reg_al = 0x40;
 }
 
 int timer1_pwm_min()
