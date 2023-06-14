@@ -7,12 +7,9 @@ volatile unsigned char *PIN_B = (unsigned char *)0x23;	  // direccion de PIN_B
 volatile unsigned char *DDR_B = (unsigned char *)0x24;	  // direccion de DDR_B
 volatile unsigned char *PUERTO_B = (unsigned char *)0x25; // direccion de PORT_B
 
-#define RUN 0
-#define DBG 1
-
 int main(void)
 {
-	int pos = 0;
+	int speed = 0;
 	char input, left_btn, right_btn;
 	/* configurar entrada/salida de datos */
 	(*DDR_B) |= 0b00000010;
@@ -21,50 +18,33 @@ int main(void)
 
 	timer1_init();
 	serial_init();
-	while (RUN)
+	while (1)
 	{
 		input = ((*PIN_B) & 0b00001100) >> 2;
 		sleep_ms(5);
 		switch (input)
 		{
 		case 1:
-			if (pos < 260)
+			if (speed < 100)
 			{
-				pos += 10;
+				speed += 10;
+				timer1_pwm_move_to(speed);
 			}
 			break;
 		case 2:
-			if (pos > 0)
+			if (speed > 0)
 			{
-				pos -= 10;
+				speed -= 10;
+				timer1_pwm_move_to(speed);
 			}
 			break;
 		default:
 			break;
 		}
-		timer1_pwm_move_to(pos);
-		sleep_ms(20);
-	}
-	while (DBG)
-	{
-		timer1_pwm_move_to(200);
-		sleep_ms_times(50, 50);
-		timer1_pwm_max();
-		sleep_ms_times(50, 50);
-		timer1_pwm_min();
-		sleep_ms_times(50, 50);
-		// sleep_ms_times(50, 50);
-		// timer1_pwm_move_to(0);
-		// sleep_ms_times(50, 50);
-		// timer1_pwm_move_to(180);
-		// sleep_ms_times(50, 50);
-		// timer1_pwm_move_to(200);
-		// sleep_ms_times(50, 50);
-		// timer1_pwm_move_to(180);
-		// sleep_ms_times(50, 50);
-		// timer1_pwm_move_to(180);
+		sleep_ms(90);
 	}
 
+	timer1_pwm_max();
 	for (;;)
 	{
 		;
