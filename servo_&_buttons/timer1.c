@@ -21,19 +21,20 @@
  * PREESCALAR:         8
  * f_cpu/prescalar = 16000000/8 = 2000000 t/s
  *
- * FREQ:  2000000 t/s * 0.020    = 39999 = 0x9c3f
+ * FREQ:  2000000 t/s * 0.020    = 40000 = 0x9c40
  * MIN:   2000000 t/s * 0.001    =  2000 = 0x07d0
- * MAX:   2000000 t/s * 0.002    =  3999 = 0x0f9f
- *        2000000 t/s * 0.02     =  XXXX = 0x9c40
+ * NMIN:  2000000 t/s * 0.0005           = 0x03e8
+ * MAX:   2000000 t/s * 0.002    =  4000 = 0x0fa0
+ * NMAX   2000000 t/s * 0.0022           = 0x1130
  **********************************************************************/
 
 /* Macros de valores */
-#define MIN_PWM_8P 2000
-#define MAX_PWM_8P 3999
+#define NMIN_PWM_8P 0x03e8
+#define NMAX_PWM_8P 0x1130
 #define TIMER1_FREQ_H 0x9c
-#define TIMER1_FREQ_L 0x3f
-#define TIMER1_0CR1AH_POS 0x07
-#define TIMER1_0CR1AL_POS 0xd0
+#define TIMER1_FREQ_L 0x40
+#define TIMER1_0CR1AH_POS 0x03
+#define TIMER1_0CR1AL_POS 0xe8
 
 /* Estructura de datos del driver TIMER */
 typedef struct
@@ -80,17 +81,17 @@ int timer1_init()
 }
 
 /**
- * GRADE: para posicionar el servo (min 0 y max 100)
+ * POS: posicion del servo (min 0 y max 100)
  */
-int timer1_pwm_move_to(int grade)
+int timer1_pwm_move_to(int pos)
 {
-        uint16_t init_value, temp;
+        long int init_value, temp;
         uint8_t low, high;
 
-        // if (grade < 0 || grade > 100)
-        //         return 1;
+        if (pos < 0 || pos > 100)
+                return 1;
 
-        temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * grade;
+        temp = NMIN_PWM_8P + (NMAX_PWM_8P - NMIN_PWM_8P) / 100 * pos;
         high = (temp >> 8);
         low = temp;
 
@@ -101,14 +102,26 @@ int timer1_pwm_move_to(int grade)
         return 0;
 }
 
+/*
+ * MAX: 2000000 t/s * 0.002     =  4000 = 0x0fa0
+ * NMAX 2000000 t/s * 0.0022            = 0x1130
+ */
 int timer1_pwm_max()
 {
-        timer->out_compare_reg_ah = 0x07;
-        timer->out_compare_reg_al = 0xd0;
+        // timer->out_compare_reg_ah = 0x0f;
+        // timer->out_compare_reg_al = 0x9f;
+        timer->out_compare_reg_ah = 0x11;
+        timer->out_compare_reg_al = 0x30;
 }
+
+/*
+ * MIN:   2000000 t/s * 0.001    =  2000 = 0x07d0
+ * NMIN:  2000000 t/s * 0.0005           = 0x03e8
+ */
 
 int timer1_pwm_min()
 {
-        timer->out_compare_reg_ah = 0x0f;
-        timer->out_compare_reg_al = 0x9f;
+
+        timer->out_compare_reg_ah = 0x10;
+        timer->out_compare_reg_al = 0x68;
 }
