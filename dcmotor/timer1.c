@@ -23,17 +23,17 @@
  *
  * FREQ:  2000000 t/s * 0.020    = 39999 = 0x9c3f
  * MIN:   2000000 t/s * 0.001    =  2000 = 0x07d0
- * MAX:   2000000 t/s * 0.002    =  3999 = 0x0f9f
- *        2000000 t/s * 0.02     =  XXXX = 0x9c40
+ * MAX:   2000000 t/s * 0.002    =  3999 = 0x9c40
+ *        2000000 t/s * 0.002    =  XXXX = 0x9c3f
  **********************************************************************/
 
 /* Macros de valores */
-#define MIN_PWM_8P 2000
-#define MAX_PWM_8P 3999
+#define MIN_PWM_8P 0x07d0
+#define MAX_PWM_8P 0x9c3f
 #define TIMER1_FREQ_H 0x9c
 #define TIMER1_FREQ_L 0x3f
-#define TIMER1_0CR1AH_POS 0x07
-#define TIMER1_0CR1AL_POS 0xd0
+#define TIMER1_0CR1AH_POS 0x0f
+#define TIMER1_0CR1AL_POS 0x9f
 
 /* Estructura de datos del driver TIMER */
 typedef struct
@@ -80,17 +80,17 @@ int timer1_init()
 }
 
 /**
- * GRADE: para posicionar el servo (min 0 y max 100)
+ * SPEED: para cambiar la velocidad del motor de corriente continua
  */
-int timer1_pwm_move_to(int grade)
+int timer1_pwm_move_to(int speed)
 {
-        uint16_t init_value, temp;
+        uint16_t temp;
         uint8_t low, high;
 
-        // if (grade < 0 || grade > 100)
-        //         return 1;
+        if (speed < 0 || speed > 100)
+                return 1;
 
-        temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * grade;
+        temp = MIN_PWM_8P + (MAX_PWM_8P - MIN_PWM_8P) / 100 * speed;
         high = (temp >> 8);
         low = temp;
 
@@ -103,12 +103,12 @@ int timer1_pwm_move_to(int grade)
 
 int timer1_pwm_max()
 {
-        timer->out_compare_reg_ah = 0x07;
-        timer->out_compare_reg_al = 0xd0;
+        timer->out_compare_reg_ah = 0x9c;
+        timer->out_compare_reg_al = 0x3f;
 }
 
 int timer1_pwm_min()
 {
-        timer->out_compare_reg_ah = 0x0f;
-        timer->out_compare_reg_al = 0x9f;
+        timer->out_compare_reg_ah = 0x03;
+        timer->out_compare_reg_al = 0xe8;
 }
