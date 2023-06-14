@@ -62,6 +62,7 @@ buftab              0x28              binaries/bufinit.o
 mkmutex             0x2               binaries/mark.o
 count1000           0x4               binaries/clkinit.o
 clktime             0x4               binaries/clkinit.o
+ticks               0x2               binaries/timer1.o
 nbpools             0x4               binaries/bufinit.o
 queuetab            0x60              binaries/queue.o
 memlist             0x6               binaries/initialize.o
@@ -445,6 +446,14 @@ Secciones de salida descartadas
  .text          0x0000000000000000        0x0 binaries/namopen.o
  .data          0x0000000000000000        0x0 binaries/namopen.o
  .bss           0x0000000000000000        0x0 binaries/namopen.o
+ .text          0x0000000000000000        0x0 binaries/adc.o
+ .data          0x0000000000000000        0x0 binaries/adc.o
+ .bss           0x0000000000000000        0x0 binaries/adc.o
+ .text.adc_init
+                0x0000000000000000       0x12 binaries/adc.o
+ .text.adc_get  0x0000000000000000       0x2e binaries/adc.o
+ .data.adc      0x0000000000000000        0x2 binaries/adc.o
+ .comment       0x0000000000000000       0x12 binaries/adc.o
  .text          0x0000000000000000        0x0 binaries/main.o
  .data          0x0000000000000000        0x0 binaries/main.o
  .bss           0x0000000000000000        0x0 binaries/main.o
@@ -453,12 +462,42 @@ Secciones de salida descartadas
  .bss           0x0000000000000000        0x0 binaries/serial.o
  .text.serial_get_char
                 0x0000000000000000       0x12 binaries/serial.o
- .text          0x0000000000000000        0x0 binaries/tarea_comm.o
- .data          0x0000000000000000        0x0 binaries/tarea_comm.o
- .bss           0x0000000000000000        0x0 binaries/tarea_comm.o
- .text          0x0000000000000000        0x0 binaries/tarea_led.o
- .data          0x0000000000000000        0x0 binaries/tarea_led.o
- .bss           0x0000000000000000        0x0 binaries/tarea_led.o
+ .text          0x0000000000000000        0x0 binaries/task_knob_motor.o
+ .data          0x0000000000000000        0x0 binaries/task_knob_motor.o
+ .bss           0x0000000000000000        0x0 binaries/task_knob_motor.o
+ .comment       0x0000000000000000       0x12 binaries/task_knob_motor.o
+ .text          0x0000000000000000        0x0 binaries/task_led_observer.o
+ .data          0x0000000000000000        0x0 binaries/task_led_observer.o
+ .bss           0x0000000000000000        0x0 binaries/task_led_observer.o
+ .text          0x0000000000000000        0x0 binaries/task_operator.o
+ .data          0x0000000000000000        0x0 binaries/task_operator.o
+ .bss           0x0000000000000000        0x0 binaries/task_operator.o
+ .comment       0x0000000000000000       0x12 binaries/task_operator.o
+ .text          0x0000000000000000        0x0 binaries/task_reporter.o
+ .data          0x0000000000000000        0x0 binaries/task_reporter.o
+ .bss           0x0000000000000000        0x0 binaries/task_reporter.o
+ .text          0x0000000000000000        0x0 binaries/task_servo_handler.o
+ .data          0x0000000000000000        0x0 binaries/task_servo_handler.o
+ .bss           0x0000000000000000        0x0 binaries/task_servo_handler.o
+ .comment       0x0000000000000000       0x12 binaries/task_servo_handler.o
+ .text          0x0000000000000000        0x0 binaries/timer1.o
+ .data          0x0000000000000000        0x0 binaries/timer1.o
+ .bss           0x0000000000000000        0x0 binaries/timer1.o
+ .text.timer1_init
+                0x0000000000000000       0x32 binaries/timer1.o
+ .text.timer1_pwm_move_to
+                0x0000000000000000       0x44 binaries/timer1.o
+ .text.timer1_pwm_max
+                0x0000000000000000       0x12 binaries/timer1.o
+ .text.timer1_pwm_min
+                0x0000000000000000       0x12 binaries/timer1.o
+ .data.timer_interrupt_flag_reg
+                0x0000000000000000        0x2 binaries/timer1.o
+ .data.timer_interrupt_mask_reg
+                0x0000000000000000        0x2 binaries/timer1.o
+ .data.timer    0x0000000000000000        0x2 binaries/timer1.o
+ .comment       0x0000000000000000       0x12 binaries/timer1.o
+ COMMON         0x0000000000000000        0x2 binaries/timer1.o
  .data          0x0000000000000000        0x0 binaries/ctxsw.o
  .bss           0x0000000000000000        0x0 binaries/ctxsw.o
  .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr5/libgcc.a(_mulsi3.o)
@@ -742,10 +781,15 @@ LOAD binaries/mount.o
 LOAD binaries/naminit.o
 LOAD binaries/nammap.o
 LOAD binaries/namopen.o
+LOAD binaries/adc.o
 LOAD binaries/main.o
 LOAD binaries/serial.o
-LOAD binaries/tarea_comm.o
-LOAD binaries/tarea_led.o
+LOAD binaries/task_knob_motor.o
+LOAD binaries/task_led_observer.o
+LOAD binaries/task_operator.o
+LOAD binaries/task_reporter.o
+LOAD binaries/task_servo_handler.o
+LOAD binaries/timer1.o
 LOAD binaries/ctxsw.o
 START GROUP
 LOAD /usr/lib/gcc/avr/5.4.0/avr5/libgcc.a
@@ -1107,12 +1151,12 @@ END GROUP
  .text.serial_put_str
                 0x0000000000001eb8       0x1e binaries/serial.o
                 0x0000000000001eb8                serial_put_str
+ .text.led_testigo
+                0x0000000000001ed6       0x1e binaries/task_led_observer.o
+                0x0000000000001ed6                led_testigo
  .text.comunicacion
-                0x0000000000001ed6       0x1a binaries/tarea_comm.o
-                0x0000000000001ed6                comunicacion
- .text.led_placa
-                0x0000000000001ef0       0x1e binaries/tarea_led.o
-                0x0000000000001ef0                led_placa
+                0x0000000000001ef4       0x1a binaries/task_reporter.o
+                0x0000000000001ef4                comunicacion
  .text.libgcc.div
                 0x0000000000001f0e       0x28 /usr/lib/gcc/avr/5.4.0/avr5/libgcc.a(_divmodsi4.o)
                 0x0000000000001f0e                __divmodsi4
@@ -1204,7 +1248,7 @@ END GROUP
  .rodata.str1.1
                 0x000000000080013b       0x21 binaries/main.o
  .rodata.str1.1
-                0x000000000080015c       0x11 binaries/tarea_comm.o
+                0x000000000080015c       0x11 binaries/task_reporter.o
  *(.gnu.linkonce.r*)
                 0x000000000080016e                . = ALIGN (0x2)
  *fill*         0x000000000080016d        0x1 
@@ -1346,8 +1390,8 @@ END GROUP
  .comment       0x0000000000000011       0x12 binaries/namopen.o
  .comment       0x0000000000000011       0x12 binaries/main.o
  .comment       0x0000000000000011       0x12 binaries/serial.o
- .comment       0x0000000000000011       0x12 binaries/tarea_comm.o
- .comment       0x0000000000000011       0x12 binaries/tarea_led.o
+ .comment       0x0000000000000011       0x12 binaries/task_led_observer.o
+ .comment       0x0000000000000011       0x12 binaries/task_reporter.o
  .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr5/libc.a(vsnprintf.o)
  .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr5/libc.a(vfprintf_std.o)
  .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr5/libc.a(fputc.o)
