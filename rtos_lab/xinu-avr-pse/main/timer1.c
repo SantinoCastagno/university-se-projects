@@ -12,8 +12,8 @@
 #include "serial.h"
 
 /* Macros para la configuracion de los registros de control */
-#define CONF_CONTROL_REG_A_FPWM 0b10000010; // [COM1A1|COM1A2]  clear on match  - [WGM11|WGM10]         fast PWM
-#define CONF_CONTROL_REG_B_FPWM 0b00011010; // [WGM13|WGM12]    fast PWM        - [CS02|CS01|CS00]      preescale 8
+#define CONF_CONTROL_REG_A_FPWM 0b10100010; // [COM1A1|COM1A2] clear on match - [COM1B1|COM1B2] clear on match -[WGM11|WGM10] fast PWM
+#define CONF_CONTROL_REG_B_FPWM 0b00011010; // [WGM13|WGM12] fast PWM         - [CS02|CS01|CS00] preescale 8
 #define CONF_CONTROL_REG_C_FPWM 0b00000000; //
 
 /********************** CALCULOS DE VALORES ***************************
@@ -21,11 +21,14 @@
  * PREESCALAR:         8
  * f_cpu/prescalar = 16000000/8 = 2000000 t/s
  *
- * FREQ:  2000000 t/s * 0.020    = 40000 = 0x9c40
- * MIN:   2000000 t/s * 0.001    =  2000 = 0x07d0
- * NMIN:  2000000 t/s * 0.0005           = 0x03e8
- * MAX:   2000000 t/s * 0.002    =  4000 = 0x0fa0
- * NMAX   2000000 t/s * 0.0022           = 0x1130
+ * FREQ:  2000000 t/s * 0.020         = 40000 = 0x9c40
+ *
+ * MIN-STD:   2000000 t/s * 0.001     =  2000 = 0x07d0
+ * MAX-STD:   2000000 t/s * 0.002     =  4000 = 0x0fa0
+ * MIN-SERVO: 2000000 t/s * 0.0005            = 0x03e8
+ * MAX-SERVO  2000000 t/s * 0.0022            = 0x1130
+ *
+ * MAX-MOTOR = FREQ = 0x9c40
  **********************************************************************/
 
 /* Macros de valores */
@@ -35,6 +38,9 @@
 #define TIMER1_FREQ_L 0x40
 #define TIMER1_0CR1AH_POS 0x03
 #define TIMER1_0CR1AL_POS 0xe8
+#define TIMER1_0CR1BH_POS 0x00
+#define TIMER1_0CR1BL_POS 0x00
+#define MAX_MOTOR 0x9c40
 
 /* Estructura de datos del driver TIMER */
 typedef struct
@@ -70,11 +76,15 @@ int timer1_init()
         timer->in_capture_regh = TIMER1_FREQ_H;
         timer->in_capture_regl = TIMER1_FREQ_L;
 
-        /* determinamos el ancho de la senial en alto en cada ciclo con el registro OCR1A */
+        /* determinamos el ancho de la senial en alto en cada ciclo para el PIN0C1A con el registro OCR1A (pinout para el servo) */
         timer->out_compare_reg_ah = TIMER1_0CR1AH_POS;
         timer->out_compare_reg_al = TIMER1_0CR1AL_POS;
 
-        /* reiniciamos los registros del contador (por las dudas) */
+        /* determinamos el ancho de la senial en alto en cada ciclo para el PIN0C1B con el registro OCR1A (pinout para el motor) */
+        timer->out_compare_reg_bh = 0x00;
+        timer->out_compare_reg_bl = 0x00;
+
+        /* reiniciamos los registros del contador */
         timer->counter_reg_l = 0;
         timer->counter_reg_h = 0;
         return 0;
@@ -83,7 +93,7 @@ int timer1_init()
 /**
  * POS: posicion del servo (min 0 y max 100)
  */
-int timer1_pwm_move_to(int pos)
+int timer1a_pwm_move_to(int pos)
 {
         long int init_value, temp;
         uint8_t low, high;
@@ -103,10 +113,10 @@ int timer1_pwm_move_to(int pos)
 }
 
 /*
- * MAX: 2000000 t/s * 0.002     =  4000 = 0x0fa0
- * NMAX 2000000 t/s * 0.0022            = 0x1130
+ * MAX-STD: 2000000 t/s * 0.002     =  4000 = 0x0fa0
+ * MAX-SERVO 2000000 t/s * 0.0022            = 0x1130
  */
-int timer1_pwm_max()
+int timer1a_pwm_max()
 {
         // timer->out_compare_reg_ah = 0x0f;
         // timer->out_compare_reg_al = 0x9f;
@@ -115,13 +125,35 @@ int timer1_pwm_max()
 }
 
 /*
- * MIN:   2000000 t/s * 0.001    =  2000 = 0x07d0
- * NMIN:  2000000 t/s * 0.0005           = 0x03e8
+ * MIN-STD:   2000000 t/s * 0.001    =  2000 = 0x07d0
+ * MIN-SERVO:  2000000 t/s * 0.0005           = 0x03e8
  */
 
-int timer1_pwm_min()
+int timer1a_pwm_min()
 {
 
         timer->out_compare_reg_ah = 0x10;
         timer->out_compare_reg_al = 0x68;
+}
+
+/**
+ * SPEED: velocidad del motor (min 0 y max 100)
+ */
+int timer1b_pwm_move_to(int speed)
+{
+        long int init_value, temp;
+        uint8_t low, high;
+
+        if (speed < 0 || speed > 100)
+                return 1;
+
+        temp = MAX_MOTOR / 100 * speed;
+        high = (temp >> 8);
+        low = temp;
+
+        /* determinamos el ancho de la senial en alto en cada ciclo con el registro OCR1B */
+        timer->out_compare_reg_bh = high;
+        timer->out_compare_reg_bl = low;
+
+        return 0;
 }

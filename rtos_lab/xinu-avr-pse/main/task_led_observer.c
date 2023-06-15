@@ -7,7 +7,7 @@
 #include <xinu.h>
 
 
-int led_testigo(void)
+int led_observer(void)
 {
     volatile unsigned char* DDR_B = (unsigned char*) 0x24;
     volatile unsigned char* PUERTO_B = (unsigned char*) 0x25;

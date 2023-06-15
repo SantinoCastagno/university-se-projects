@@ -1,9 +1,9 @@
 /**********************************************************************
  *
  * Filename:    serial.h
- * 
- * API para la aplicacion embebida 
- * META : ocultar el hardware a la aplicacion 
+ *
+ * API para la aplicacion embebida
+ * META : ocultar el hardware a la aplicacion
  *
  **********************************************************************/
 
@@ -14,5 +14,6 @@ void serial_init(void);
 void serial_put_char(char);
 char serial_get_char(void);
 void serial_put_str(char *);
+void serial_put_int(int val, int digitos);
 
 #endif /* _SERIAL_H */
