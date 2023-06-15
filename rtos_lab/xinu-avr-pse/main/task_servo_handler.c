@@ -8,17 +8,27 @@ extern volatile unsigned char *PUERTO_B; // direccion de PORT_B
 #include "timer1.h"
 
 extern unsigned char servo_angle;
+extern unsigned char input_op;
 
 /**
- * tarea encargada de manipular el angulo del servo
+ * tarea encargada de posicionar el servo
  */
 int servo_handler(void)
 {
     while (1)
     {
-        input = adc_get(0);
-        motor_speed = input / 10; // para simplificar la operacion de motor_speed = input * 100 / 1024
-        timer1a_pwm_move_to(servo_angle);
-        sleepms(100);
+
+        if (servo_angle > 0 && input_op == 'a')
+        {
+            servo_angle -= 10;
+            timer1a_pwm_move_to(servo_angle * 100 / 180);
+        }
+        else if (servo_angle < 180 && input_op == 'd')
+        {
+            servo_angle += 10;
+            timer1a_pwm_move_to(servo_angle * 100 / 180);
+        }
+
+        sleepms(250);
     }
 }

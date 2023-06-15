@@ -15,5 +15,6 @@ void serial_put_char(char);
 char serial_get_char(void);
 void serial_put_str(char *);
 void serial_put_int(int val, int digitos);
+int serial_get_char_ready(void);
 
 #endif /* _SERIAL_H */

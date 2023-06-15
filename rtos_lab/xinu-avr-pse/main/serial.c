@@ -111,6 +111,11 @@ void serial_put_str(char *str)
     // serial_put_char('\n');
 }
 
+int serial_get_char_ready(void)
+{
+    return ((puerto_serial->status_control_a) & (READY_TO_READ)) != 0;
+}
+
 void serial_put_int(int val, int digitos)
 {
     int tmp, i = digitos;

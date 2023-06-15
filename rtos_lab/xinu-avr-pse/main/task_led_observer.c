@@ -1,25 +1,34 @@
 /*
  * tarea_led: este programa parpadea el led de la placa.
- * 
+ *
  * Se desarrolla como un programa aislado del resto.
  */
 
 #include <xinu.h>
 
+extern volatile unsigned char *PUERTO_B;
+extern unsigned char motor_speed;
+
+#define FREQ 1000
 
 int led_observer(void)
 {
-    volatile unsigned char* DDR_B = (unsigned char*) 0x24;
-    volatile unsigned char* PUERTO_B = (unsigned char*) 0x25;
 
-    *DDR_B = 0x20; // control: salida.
-
-    while (1){
-        sleepms(200);
-        *PUERTO_B |= 0x20; // high
-        sleepms(200);
-        *PUERTO_B = (*PUERTO_B & (~0x20)); // low
+    unsigned char speed = 0;
+    while (1)
+    {
+        speed = motor_speed;
+        if (speed > 0)
+        {
+            sleepms(FREQ - speed * 10);
+            *PUERTO_B |= 0b00001000; // high
+            sleepms(FREQ - speed * 10);
+            *PUERTO_B = (*PUERTO_B & (~0b00001000)); // low
+        }
+        else
+        {
+            *PUERTO_B |= 0b00001000; // high
+        }
     }
-
+    return 0;
 }
-

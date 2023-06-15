@@ -118,5 +118,5 @@ FIN DE RAFA */
 
 /* Configuration and Size Constants */
 
-#define	NPROC	     4		/* number of user processes		*/
-#define	NSEM	     4		/* number of semaphores			*/
+#define	NPROC	     7		/* number of user processes		*/
+#define	NSEM	     0		/* number of semaphores			*/
