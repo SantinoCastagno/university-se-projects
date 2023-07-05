@@ -17,17 +17,16 @@ Se listaron los siguientes requisitos funcionales:
 ## Inventario
 
 Se deben utilizar los siguientes materiales:
-- Arduino uno o Arduino nano
-- Breadboard
-- Cables
-- Rele
-- Sensor de temperatura
-- Sensor de humedad del ambiente
-- Sensor de humedad del suelo
-- Sensor de intensidad luminosa (posiblemente resistencia)
-- Bombillos (para iluminación)
-- Resistencia de temperatura (para caldear)
-- Ventiladores (para refrigerar)
+- [x] Arduino uno o Arduino nano
+- [x] Breadboard
+- [x] Cables
+- [x] Rele
+- [x] Sensor de temperatura y humedad del ambiente
+- [ ] Sensor de humedad del suelo
+- [x] Sensor de intensidad luminosa (posiblemente resistencia)
+- [ ] Bombillos (para iluminación)
+- [ ] Resistencia de temperatura (para caldear)
+- [ ] Ventiladores (para refrigerar)
 
 ## Variables, sensores y actuadores
 
