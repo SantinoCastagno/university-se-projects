@@ -22,11 +22,12 @@ Se deben utilizar los siguientes materiales:
 - [x] Cables
 - [x] Rele
 - [x] Sensor de temperatura y humedad del ambiente
-- [ ] Sensor de humedad del suelo
+- [-] Sensor de humedad del suelo
 - [x] Sensor de intensidad luminosa (posiblemente resistencia)
-- [ ] Bombillos (para iluminación)
-- [ ] Resistencia de temperatura (para caldear)
-- [ ] Ventiladores (para refrigerar)
+- [-] Bombillos (para iluminación)
+- [-] Resistencia de temperatura (para caldear)
+- [-] Ventiladores (para refrigerar)
+- [-] Moudulo de conexión wifi.
 
 ## Variables, sensores y actuadores
 
