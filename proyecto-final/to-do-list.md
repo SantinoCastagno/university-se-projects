@@ -10,9 +10,11 @@
     1. [-] Entender como funciona el sensor de humedad y temperatura del ambiente.
     2. [-] Programar o adaptar driver utilizado por el sensor de humedad y temperatura del ambiente.
     3. [-] Programar sensor para **medir** la intensidad de humedad y temperatura del ambiente.
-- **Actuador de temperatura** del ambiente.
-    1. [-] Programar actuador para **reducir** la temperatura.
-- **Actuador de temperatura** del ambiente.
+- **Actuador de temperatura** del ambiente (SIN CONFIRMAR).
+    1. [-] Colocar ventiladores.
+    2. [-] Programar driver para manipular ventiladores.
+    3. [-] Programar actuador para **reducir** la temperatura.
+- **Actuador de temperatura** del ambiente (SIN CONFIRMAR).
     1. [-] Programar actuador para **elevar** la temperatura.
 - **Sensor de luz** del ambiente.
     1. [-] Programar sensor para **medir** la intensidad de luz del ambiente.
