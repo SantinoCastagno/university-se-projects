@@ -32,7 +32,6 @@ func read_uart() {
 		}()
 		// time.Sleep(100 * time.Millisecond)
 	}
-
 	// close fi on exit and check for its returned error
 
 }
