@@ -1,4 +1,4 @@
-# Speaker & potenciometro
+# Photoresistor
 
 Este programa hace uso de la foto resistencia para manipular el brillo de la pantalla de una notebook.
 ## Running Tests

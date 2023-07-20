@@ -1,4 +1,4 @@
-# Speaker & potenciometro
+# Gamepad
 
 Este programa utiliza los componentes colocados en la protoboard como dispositivos para manipular el juego OpenTyrian.
     1. Hace uso del potenciometro para mover la nave hacía la izquierda o la derecha.

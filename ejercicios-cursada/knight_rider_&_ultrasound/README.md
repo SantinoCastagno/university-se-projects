@@ -1,4 +1,4 @@
-# Speaker & potenciometro
+# Knight Rider & Ultrasound through Serial
 
 Este programa cumple las siguientes funciones:
     1. Enciende el knight rider al presionar la tecla "k"

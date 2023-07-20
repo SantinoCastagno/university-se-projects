@@ -13,18 +13,21 @@ func read_uart() {
 	var valor_lectura []byte = make([]byte, 1)
 	var valor byte
 	exec.Command("stty", "-F", "/dev/ttyACM0", "speed", "9600").Run()
-	time.Sleep(5 * time.Second)
+	time.Sleep(3 * time.Second)
+
 	// open input file
 	fi, err := os.Open(device)
 	if err != nil {
 		panic(err)
 	}
+
 	for {
 		if _, err := fi.Read(valor_lectura); err != nil {
 			panic(err)
 		}
 		valor = valor_lectura[0]
-		fmt.Println(string(valor))
+		fmt.Print((valor_lectura[0]))
+		fmt.Print("\t" + string(valor) + "\n")
 		defer func() {
 			if err := fi.Close(); err != nil {
 				panic(err)
@@ -45,6 +48,7 @@ func write_uart() {
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	// do not display entered characters on the screen
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+
 	defer func() {
 		exec.Command("reset").Run()
 	}()
@@ -69,5 +73,9 @@ func write_uart() {
 }
 
 func main() {
-	write_uart()
+	read_uart()
 }
+
+/*
+* TODO: quizas sea necesario poner la velocidad de la comunicacion del puerto serie a 9600 en algun punto
+ */

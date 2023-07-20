@@ -1,5 +1,5 @@
 
-# hello_world
+# Knight Rider
 
 Este programa enciende y apaga tres leds de la placa (portb bit 0, 1 y 2) en loop, en función del pulsador (port bit 5).
 ## Running Tests
