@@ -24,8 +24,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	exec.Command("xdotool", "keydown", "s").Run()
 	for {
-
 		if _, err := fi.Read(valor_lectura); err != nil {
 			panic(err)
 		}
