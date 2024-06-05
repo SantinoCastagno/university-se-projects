@@ -17,21 +17,22 @@ Se listaron los siguientes requisitos funcionales:
 ## Inventario
 
 Se deben utilizar los siguientes materiales:
-- [x] Arduino uno o Arduino nano
+- [x] Arduino uno
 - [x] Breadboard
 - [x] Cables
 - [x] Rele
 - [x] Sensor de temperatura y humedad del ambiente
 - [ ] Sensor de humedad del suelo
 - [x] Sensor de intensidad luminosa (posiblemente resistencia)
+- [ ] Sensor de luz UV para radiación
 - [ ] Bombillos (para iluminación)
 - [ ] Resistencia de temperatura (para caldear)
 - [ ] Ventiladores (para refrigerar)
-- [ ] Moudulo de conexión wifi.
+- [ ] Moudulo de conexión wifi (ESP 8266)
 
-## Variables, sensores y actuadores
+## Datos variables, sensores y actuadores
 
-Las variables a controlar fueron las siguientes:
+Los datos a controlar son las siguientes:
 1. Temperatura del ambiente
 2. Humedad de la tierra
 3. Luz
@@ -45,3 +46,7 @@ Las variables a controlar fueron las siguientes:
 | Ph | ? |
 | CO2 | ? |
 | - | Se escribira un registro en nuevo en la memoria EEPROM |
+
+### Datos derivados
+
+- Se recomienda calcular la evapotranspiración en función de la temperatura y la humedad del ambiente.
