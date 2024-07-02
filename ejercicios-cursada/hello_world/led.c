@@ -10,9 +10,9 @@ int main()
 	while (1)
 	{
 		(*PUERTO_B) = 0b00000000;
-		sleep_ms(90);
+		sleep_ms(20);
 		(*PUERTO_B) = 0b00100000;
-		sleep_ms(90);
+		sleep_ms(20);
 	}
 	return 0;
 }
